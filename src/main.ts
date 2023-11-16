@@ -1,6 +1,7 @@
 import 'dotenv/config'
-import { messages, reactions } from './constants'
 import { Events, Client, GatewayIntentBits } from 'discord.js'
+import { messages, reactions } from './constants'
+import { sleep } from './utils'
 
 async function main (): Promise<void> {
   const client = new Client({
@@ -18,9 +19,11 @@ async function main (): Promise<void> {
     if (msg.author.bot) {
       return
     }
+
     if (client.user !== null && msg.mentions.users.has(client.user.id)) {
       const message = random(messages, 1)
       const reacts = random(reactions, 2)
+      await sleep(3000)
       await msg.reply(message[0])
       await msg.react(reacts[0])
       await msg.react(reacts[1])

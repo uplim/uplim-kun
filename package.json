@@ -1,0 +1,7 @@
+{
+  "name": "uplim-kun",
+  "packageManager": "yarn@4.1.0",
+  "devDependencies": {
+    "@biomejs/biome": "1.5.3"
+  }
+}

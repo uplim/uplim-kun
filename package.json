@@ -1,10 +1,9 @@
 {
 	"name": "uplim-kun",
-	"packageManager": "yarn@4.1.1",
 	"scripts": {
 		"format": "biome format --write .",
 		"ci": "biome ci .",
-		"start": "yarn build && node --env-file=.env dist/index.js",
+		"start": "npm run build && node --env-file=.env dist/index.js",
 		"build": "tsc -p ."
 	},
 	"devDependencies": {
@@ -16,5 +15,8 @@
 	"dependencies": {
 		"@notionhq/client": "2.2.14",
 		"discord.js": "14.14.1"
+	},
+	"engines": {
+		"node": "20.11.1"
 	}
 }

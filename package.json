@@ -1,13 +1,20 @@
 {
-  "name": "uplim-kun",
-  "packageManager": "yarn@4.1.0",
-  "devDependencies": {
-    "@biomejs/biome": "1.5.3",
-    "@types/node": "20.11.19",
-    "ts-node": "10.9.2",
-    "typescript": "5.3.3"
-  },
-  "dependencies": {
-    "discord.js": "14.14.1"
-  }
+	"name": "uplim-kun",
+	"packageManager": "yarn@4.1.1",
+	"scripts": {
+		"format": "biome format --write .",
+		"ci": "biome ci .",
+		"start": "yarn build && node --env-file=.env dist/index.js",
+		"build": "tsc -p ."
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.5.3",
+		"@types/node": "20.11.25",
+		"ts-node": "10.9.2",
+		"typescript": "5.4.2"
+	},
+	"dependencies": {
+		"@notionhq/client": "2.2.14",
+		"discord.js": "14.14.1"
+	}
 }

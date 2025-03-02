@@ -20,7 +20,7 @@ export const timeBuilder = new SlashCommandBuilder()
 			.setDescription("勤務を開始するよ")
 			.addStringOption((option) =>
 				option
-					.setName("project")
+					.setName("project_name")
 					.setDescription("勤務予定のプロジェクト")
 					.setRequired(true),
 			)

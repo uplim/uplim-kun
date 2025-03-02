@@ -6,11 +6,13 @@ type Options = {
 	projectName: string;
 	userId: string;
 	userName: string;
+  memo: string;
 	sheets: sheets_v4.Sheets;
 };
 
 export const recordStartTime = async ({
 	projectName,
+  memo,
 	userId,
 	userName,
 	sheets,
@@ -42,12 +44,13 @@ export const recordStartTime = async ({
 		range: `${projectName}!A:E`,
 		valueInputOption: "USER_ENTERED",
 		requestBody: {
-			values: [[userId, userName, startTime, "", ""]],
+			values: [[userId, userName, startTime, "", "", memo]],
 		},
 	});
 
 	return {
 		projectName,
 		startTime: now.toLocaleString(),
+    memo
 	};
 };

@@ -30,7 +30,9 @@ export const createSheet = async ({ sheets, projectName }: Option) => {
 			range: `${projectName}!A1:E1`,
 			valueInputOption: "USER_ENTERED",
 			requestBody: {
-				values: [["userId", "username", "startTime", "endTime", "totalHours"]],
+				values: [
+					["userId", "username", "startTime", "endTime", "totalHours", "memo"],
+				],
 			},
 		});
 	}

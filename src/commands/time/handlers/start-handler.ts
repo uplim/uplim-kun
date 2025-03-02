@@ -10,11 +10,12 @@ type Option = {
 
 export const startHandler = async ({ sheets, interaction }: Option) => {
 	const projectName = interaction.options.getString("project_name");
+	const memo = interaction.options.getString("memo");
 
 	try {
-		if (!projectName) {
+		if (!projectName || !memo) {
 			await interaction.reply({
-				content: "project_nameは必須です。",
+				content: "project_nameとmemoは必須です。",
 				ephemeral: false,
 			});
 			return;
@@ -23,11 +24,12 @@ export const startHandler = async ({ sheets, interaction }: Option) => {
 		const result = await recordStartTime({
 			sheets,
 			projectName,
+			memo,
 			userId: interaction.user.id,
 			userName: interaction.user.username,
 		});
 		await interaction.reply({
-			content: `プロジェクト "${result.projectName}" の勤務を開始しました。開始時間: ${result.startTime}`,
+			content: `プロジェクト "${result.projectName}" の勤務を開始しました。開始時間: ${result.startTime}\nメモ：${result.memo}`,
 			ephemeral: false,
 		});
 	} catch {

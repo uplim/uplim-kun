@@ -1,22 +1,23 @@
 {
-  "compilerOptions": {
-    "module": "CommonJS",
-    "target": "ESNext",
-    "strict": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "noImplicitAny": true,
-    "noUncheckedIndexedAccess": true,
-    "declaration": true,
-    "importHelpers": true,
-    "skipLibCheck": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "rootDir": "./src",
-    "outDir": "./dist",
-  },
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+	"compilerOptions": {
+		"module": "CommonJS",
+		"target": "ESNext",
+		"strict": true,
+		"strictNullChecks": true,
+		"resolveJsonModule": true,
+		"strictPropertyInitialization": true,
+		"allowSyntheticDefaultImports": true,
+		"experimentalDecorators": true,
+		"noImplicitAny": true,
+		"noUncheckedIndexedAccess": true,
+		"declaration": true,
+		"importHelpers": true,
+		"skipLibCheck": true,
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"rootDir": "./src",
+		"outDir": "./dist"
+	},
+	"include": ["**/*.ts"],
+	"exclude": ["node_modules", "dist"]
 }

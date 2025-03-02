@@ -35,7 +35,7 @@ client.once("ready", async () => {
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
-	if (!interaction.isCommand()) return;
+	if (!interaction.isChatInputCommand()) return;
 
 	if (interaction.commandName === "time") {
 		await handlers.time({ interaction, sheets: sheetsClient });

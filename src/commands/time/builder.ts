@@ -9,7 +9,7 @@ export const timeBuilder = new SlashCommandBuilder()
 			.setDescription("新しいプロジェクトを作成するよ")
 			.addStringOption((option) =>
 				option
-					.setName("name")
+					.setName("project_name")
 					.setDescription("プロジェクト名")
 					.setRequired(true),
 			),

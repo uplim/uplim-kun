@@ -27,7 +27,7 @@ export const createSheet = async ({ sheets, projectName }: Option) => {
 	if (sheetId) {
 		await sheets.spreadsheets.values.update({
 			spreadsheetId: process.env.TIMER_SPREADSHEET_ID,
-			range: `${projectName}!A1:E1`,
+			range: `${projectName}!A1:F1`,
 			valueInputOption: "USER_ENTERED",
 			requestBody: {
 				values: [

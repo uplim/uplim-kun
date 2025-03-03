@@ -39,6 +39,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 	if (interaction.commandName === "time") {
 		await handlers.time({ interaction, sheets: sheetsClient });
+	} else if (interaction.commandName === "fortune") {
+		await handlers.fortune({ interaction });
 	}
 });
 

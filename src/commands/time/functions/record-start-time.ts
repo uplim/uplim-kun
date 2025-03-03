@@ -1,4 +1,5 @@
 import type { sheets_v4 } from "googleapis";
+import { formatDateTime } from "../../../functions/format-date-time";
 import { sheetsClient } from "../../../libs/google-sheets";
 import { getSheets } from "./get-sheets";
 
@@ -6,13 +7,13 @@ type Options = {
 	projectName: string;
 	userId: string;
 	userName: string;
-  memo: string;
+	memo: string;
 	sheets: sheets_v4.Sheets;
 };
 
 export const recordStartTime = async ({
 	projectName,
-  memo,
+	memo,
 	userId,
 	userName,
 	sheets,
@@ -23,8 +24,7 @@ export const recordStartTime = async ({
 		throw new Error(`プロジェクト ${projectName}が見つかりません。`);
 	}
 
-	const now = new Date();
-	const startTime = now.toISOString();
+	const startTime = formatDateTime(new Date());
 
 	// 同じユーザーIDで既に勤務中のレコードがあるか確認
 	const res = await sheetsClient.spreadsheets.values.get({
@@ -50,7 +50,7 @@ export const recordStartTime = async ({
 
 	return {
 		projectName,
-		startTime: now.toLocaleString(),
-    memo
+		startTime,
+		memo,
 	};
 };

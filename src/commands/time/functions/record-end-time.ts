@@ -1,4 +1,5 @@
 import type { sheets_v4 } from "googleapis";
+import { formatDateTime } from "../../../functions/format-date-time";
 import { sheetsClient } from "../../../libs/google-sheets";
 import { getSheets } from "./get-sheets";
 
@@ -35,14 +36,14 @@ export const recordEndTime = async ({ userId, sheets }: Option) => {
 					range: `${sheetTitle}!D${i + 1}:E${i + 1}`,
 					valueInputOption: "USER_ENTERED",
 					requestBody: {
-						values: [[endTime.toISOString(), totalHours.toFixed(2)]],
+						values: [[formatDateTime(endTime), totalHours.toFixed(2)]],
 					},
 				});
 
 				endedProject = {
 					projectName: sheetTitle,
-					startTime: startTime.toLocaleString(),
-					endTime: endTime.toLocaleString(),
+					startTime: formatDateTime(startTime),
+					endTime: formatDateTime(endTime),
 					totalHours: totalHours.toFixed(2),
 				};
 

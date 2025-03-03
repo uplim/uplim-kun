@@ -29,7 +29,7 @@ export const startHandler = async ({ sheets, interaction }: Option) => {
 			userName: interaction.user.username,
 		});
 		await interaction.reply({
-			content: `プロジェクト "${result.projectName}" の勤務を開始しました。開始時間: ${result.startTime}\nメモ：${result.memo}`,
+			content: `${interaction.user.displayName}がプロジェクト "${result.projectName}" の勤務を開始しました。\n開始時間: ${result.startTime}\nメモ：${result.memo}`,
 			ephemeral: false,
 		});
 	} catch {

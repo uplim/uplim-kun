@@ -31,7 +31,14 @@ export const createSheet = async ({ sheets, projectName }: Option) => {
 			valueInputOption: "USER_ENTERED",
 			requestBody: {
 				values: [
-					["userId", "username", "startTime", "endTime", "totalHours", "memo"],
+					[
+						"ユーザーID",
+						"ユーザー名",
+						"開始時刻",
+						"終了時刻",
+						"稼働時間（時）",
+						"メモ",
+					],
 				],
 			},
 		});

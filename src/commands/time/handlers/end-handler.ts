@@ -13,7 +13,7 @@ export const endHandler = async ({ sheets, interaction }: Option) => {
 	try {
 		const result = await recordEndTime({ sheets, userId: interaction.user.id });
 		await interaction.reply({
-			content: `プロジェクト "${result.projectName}" の勤務を終了しました。\n開始時間: ${result.startTime}\n終了時間: ${result.endTime}\n勤務時間: ${result.totalHours}時間`,
+			content: `${interaction.user.displayName}がプロジェクト "${result.projectName}" の勤務を終了しました。\n開始時間: ${result.startTime}\n終了時間: ${result.endTime}\n勤務時間: ${result.totalHours}時間`,
 			ephemeral: false,
 		});
 	} catch {

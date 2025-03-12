@@ -12,8 +12,12 @@ export const endHandler = async ({ context }: Option) => {
       userId: context.interaction.member?.user?.id ?? '',
     });
 
+    if (!result.success) {
+      return context.res(result.message);
+    }
+
     return context.res(
-      `${context.interaction.member?.user?.global_name}がプロジェクト "${result.projectName}" の勤務を終了しました。\n開始時間: ${result.startTime}\n終了時間: ${result.endTime}\n勤務時間: ${result.totalHours}時間`
+      `${context.interaction.member?.user?.global_name}がプロジェクト "${result.data.projectName}" の勤務を終了しました。\n開始時間: ${result.data.startTime}\n終了時間: ${result.data.endTime}\n勤務時間: ${result.data.totalHours}時間`
     );
   } catch {
     return context.res('エラーが発生しました');

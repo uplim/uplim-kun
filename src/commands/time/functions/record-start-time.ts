@@ -1,6 +1,7 @@
 import { append } from '../../../clients/spreadsheets/values/append';
 import { get } from '../../../clients/spreadsheets/values/get';
 import { formatDateTime } from '../../../functions/format-date-time';
+import type { Result } from '../../../types/result';
 import { getSheets } from './get-sheets';
 
 type Options = {
@@ -11,11 +12,20 @@ type Options = {
   env: Env;
 };
 
-export const recordStartTime = async ({ projectName, memo, userId, userName, env }: Options) => {
+export const recordStartTime = async ({
+  projectName,
+  memo,
+  userId,
+  userName,
+  env,
+}: Options): Promise<Result<{ startTime: string }>> => {
   const sheetList = await getSheets({ env });
 
   if (!Object.keys(sheetList).includes(projectName)) {
-    throw new Error(`プロジェクト ${projectName}が見つかりません。`);
+    return {
+      success: false,
+      message: `プロジェクト ${projectName}が見つかりません。`,
+    };
   }
 
   const startTime = formatDateTime(new Date());
@@ -29,7 +39,10 @@ export const recordStartTime = async ({ projectName, memo, userId, userName, env
   const rows = res.values || [];
   for (let i = 1; i < rows.length; i++) {
     if (rows?.[i]?.[0] === userId && rows?.[i]?.[3] === '') {
-      throw new Error('すでに勤務開始しています。先に勤務を終了してください。');
+      return {
+        success: false,
+        message: 'すでに勤務開始しています。先に勤務を終了してください。',
+      };
     }
   }
 
@@ -44,8 +57,9 @@ export const recordStartTime = async ({ projectName, memo, userId, userName, env
   });
 
   return {
-    projectName,
-    startTime,
-    memo,
+    success: true,
+    data: {
+      startTime,
+    },
   };
 };

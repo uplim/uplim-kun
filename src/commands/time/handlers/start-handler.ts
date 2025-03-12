@@ -18,8 +18,12 @@ export const startHandler = async ({ context }: Option) => {
       env: context.env,
     });
 
+    if (!result.success) {
+      return context.res(result.message);
+    }
+
     return context.res(
-      `${context.interaction.member?.user?.global_name}がプロジェクト "${result.projectName}" の勤務を開始しました。\n開始時間: ${result.startTime}\nメモ：${result.memo}`
+      `${context.interaction.member?.user?.global_name}がプロジェクト "${projectName}" の勤務を開始しました。\n開始時間: ${result.data.startTime}\nメモ：${memo}`
     );
   } catch (e) {
     return context.res('エラーが発生しました');

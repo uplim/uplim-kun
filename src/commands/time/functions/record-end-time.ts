@@ -1,6 +1,7 @@
 import { get } from '../../../clients/spreadsheets/values/get';
 import { update } from '../../../clients/spreadsheets/values/update';
 import { formatDateTime } from '../../../functions/format-date-time';
+import type { Result } from '../../../types/result';
 import { getSheets } from './get-sheets';
 
 type Options = {
@@ -8,10 +9,20 @@ type Options = {
   userId: string;
 };
 
-export const recordEndTime = async ({ userId, env }: Options) => {
+export const recordEndTime = async ({
+  userId,
+  env,
+}: Options): Promise<
+  Result<{
+    projectName: string;
+    startTime: string;
+    endTime: string;
+    totalHours: string;
+  }>
+> => {
   const sheetList = await getSheets({ env });
 
-  let endedProject = null;
+  let endedProject = undefined;
   const endTime = new Date();
 
   // 全てのシートをループして未終了の勤務を探す
@@ -55,8 +66,14 @@ export const recordEndTime = async ({ userId, env }: Options) => {
   }
 
   if (!endedProject) {
-    throw new Error('勤務中のプロジェクトが見つかりません。先に勤務を開始してください。');
+    return {
+      success: false,
+      message: '勤務中のプロジェクトが見つかりません。先に勤務を開始してください。',
+    };
   }
 
-  return endedProject;
+  return {
+    success: true,
+    data: endedProject,
+  };
 };

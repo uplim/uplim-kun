@@ -1,35 +1,25 @@
 import { type CommandContext, Embed } from 'discord-hono';
+import { UNDAMESHI_LIST } from './constant';
 
 type Options = {
   context: CommandContext;
 };
 
-// 運試しの結果リスト
-const fortuneResults = [
-  {
-    result: '大吉',
-    emoji: '🌟',
-  },
-  { result: '中吉', emoji: '✨' },
-  { result: '小吉', emoji: '🌼' },
-  { result: '吉', emoji: '🍀' },
-  {
-    result: '末吉',
-    emoji: '🌱',
-  },
-  {
-    result: '凶',
-    emoji: '☁️',
-  },
-  { result: '大凶', emoji: '⚡' },
-];
-
 export const undameshiHandler = async ({ context }: Options) => {
   // ランダムに運試し結果を選択
-  const fortune = fortuneResults[Math.floor(Math.random() * fortuneResults.length)];
+  const fortune = UNDAMESHI_LIST[Math.floor(Math.random() * UNDAMESHI_LIST.length)];
 
-  // 埋め込みメッセージの作成
+  if (fortune) {
+    return context.res({
+      embeds: [
+        new Embed()
+          .title(`${fortune.emoji} 今日の運勢: ${fortune.result} ${fortune.emoji}`)
+          .description(fortune.comment || ''),
+      ],
+    });
+  }
+
   return context.res({
-    embeds: [new Embed().title(`${fortune?.emoji} 今日の運勢: ${fortune?.result} ${fortune?.emoji}`)],
+    embeds: [new Embed().title('運勢が見つかりませんでした').description('もう一度お試しください。')],
   });
 };

@@ -1,6 +1,6 @@
 import { get } from '../../../clients/spreadsheets/values/get';
 import { update } from '../../../clients/spreadsheets/values/update';
-import { formatDateTime } from '../../../functions/format-date-time';
+import { formatJSTDatetime } from '../../../functions/format-jst-datetime';
 import type { Result } from '../../../types/result';
 import { getSheets } from './get-sheets';
 
@@ -45,14 +45,14 @@ export const recordEndTime = async ({
           valueInputOption: 'USER_ENTERED',
           range: `${sheetTitle}!D${i + 1}:E${i + 1}`,
           requestBody: {
-            values: [[formatDateTime(endTime), totalHours.toFixed(2)]],
+            values: [[formatJSTDatetime(endTime), totalHours.toFixed(2)]],
           },
         });
 
         endedProject = {
           projectName: sheetTitle,
-          startTime: formatDateTime(startTime),
-          endTime: formatDateTime(endTime),
+          startTime: formatJSTDatetime(startTime),
+          endTime: formatJSTDatetime(endTime),
           totalHours: totalHours.toFixed(2),
         };
 

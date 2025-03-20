@@ -1,6 +1,6 @@
 import { append } from '../../../clients/spreadsheets/values/append';
 import { get } from '../../../clients/spreadsheets/values/get';
-import { formatDateTime } from '../../../functions/format-date-time';
+import { formatJSTDatetime } from '../../../functions/format-jst-datetime';
 import type { Result } from '../../../types/result';
 import { getSheets } from './get-sheets';
 
@@ -28,7 +28,7 @@ export const recordStartTime = async ({
     };
   }
 
-  const startTime = formatDateTime(new Date());
+  const startTime = formatJSTDatetime(new Date());
 
   // 同じユーザーIDで既に勤務中のレコードがあるか確認
   const res = await get({

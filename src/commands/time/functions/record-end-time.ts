@@ -1,6 +1,7 @@
 import { get } from '../../../clients/spreadsheets/values/get';
 import { update } from '../../../clients/spreadsheets/values/update';
 import { formatJSTDatetime } from '../../../functions/format-jst-datetime';
+import { getJstDate } from '../../../functions/get-jst-date';
 import type { Result } from '../../../types/result';
 import { getSheets } from './get-sheets';
 
@@ -23,7 +24,7 @@ export const recordEndTime = async ({
   const sheetList = await getSheets({ env });
 
   let endedProject = undefined;
-  const endTime = new Date();
+  const endTime = getJstDate();
 
   // 全てのシートをループして未終了の勤務を探す
   for (const [sheetTitle] of Object.entries(sheetList)) {

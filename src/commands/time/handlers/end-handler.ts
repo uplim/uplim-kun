@@ -1,5 +1,5 @@
 import type { CommandContext } from 'discord-hono';
-import { recordEndTime } from '../functions/record-end-time';
+import { updateEndTIme } from '../functions/update-end-time';
 
 type Option = {
   context: CommandContext;
@@ -7,7 +7,7 @@ type Option = {
 
 export const endHandler = async ({ context }: Option) => {
   try {
-    const result = await recordEndTime({
+    const result = await updateEndTIme({
       env: context.env,
       userId: context.interaction.member?.user?.id ?? '',
     });

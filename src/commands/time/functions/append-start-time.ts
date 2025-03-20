@@ -12,7 +12,7 @@ type Options = {
   env: Env;
 };
 
-export const recordStartTime = async ({
+export const appendStartTime = async ({
   projectName,
   memo,
   userId,

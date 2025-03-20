@@ -1,5 +1,5 @@
 import type { CommandContext } from 'discord-hono';
-import { recordStartTime } from '../functions/record-start-time';
+import { appendStartTime } from '../functions/append-start-time';
 
 type Option = {
   context: CommandContext;
@@ -10,7 +10,7 @@ export const startHandler = async ({ context }: Option) => {
   const memo = context.var.memo;
 
   try {
-    const result = await recordStartTime({
+    const result = await appendStartTime({
       projectName,
       memo,
       userId: context.interaction.member?.user?.id ?? '',

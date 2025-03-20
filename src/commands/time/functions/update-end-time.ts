@@ -10,7 +10,7 @@ type Options = {
   userId: string;
 };
 
-export const recordEndTime = async ({
+export const updateEndTIme = async ({
   userId,
   env,
 }: Options): Promise<

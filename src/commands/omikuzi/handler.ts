@@ -1,13 +1,13 @@
 import { type CommandContext, Embed } from 'discord-hono';
-import { UNDAMESHI_LIST } from './constant';
+import { OMIKUZI_LIST } from './constant';
 
 type Options = {
   context: CommandContext;
 };
 
-export const undameshiHandler = async ({ context }: Options) => {
+export const omikuziHandler = async ({ context }: Options) => {
   // ランダムに運試し結果を選択
-  const fortune = UNDAMESHI_LIST[Math.floor(Math.random() * UNDAMESHI_LIST.length)];
+  const fortune = OMIKUZI_LIST[Math.floor(Math.random() * OMIKUZI_LIST.length)];
 
   if (fortune) {
     return context.res({

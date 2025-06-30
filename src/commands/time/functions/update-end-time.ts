@@ -1,6 +1,7 @@
 import { get } from '../../../clients/spreadsheets/values/get';
 import { update } from '../../../clients/spreadsheets/values/update';
 import { formatDatetime } from '../../../functions/format-datetime';
+import { formatDurationHourMin } from '../../../functions/format-duration';
 import { getJstDate } from '../../../functions/get-jst-date';
 import type { Result } from '../../../types/result';
 import { getSheets } from './get-sheets';
@@ -49,17 +50,18 @@ export const updateEndTIme = async ({
           };
         }
 
-        // 総勤務時間を計算
+        // 総勤務時間を計算（分単位）
         const totalWorkMinutes = (endTimeJst.getTime() - startTimeJst.getTime()) / (1000 * 60);
 
-        // 休憩時間を計算
+        // 休憩時間を計算（分単位）
         const totalBreakMinutes = calculateTotalBreakMinutes(breakData);
 
         // 実際の稼働時間を計算（総勤務時間 - 休憩時間）
         const actualWorkMinutes = totalWorkMinutes - totalBreakMinutes;
         const actualWorkHours = actualWorkMinutes / 60;
 
-        const breakTimeDisplay = totalBreakMinutes > 0 ? `${totalBreakMinutes}分` : '';
+        // 休憩時間をhh:mm形式で表示
+        const breakTimeDisplay = totalBreakMinutes > 0 ? formatDurationHourMin(totalBreakMinutes) : '';
 
         // 終了時間、休憩時間、稼働時間を更新
         await update({
@@ -72,26 +74,23 @@ export const updateEndTIme = async ({
         });
 
         endedProject = {
-          projectName: sheetTitle,
-          startTime: formatDatetime(startTimeJst),
+          projectName: rows?.[i]?.[1] ?? '',
+          startTime: rows?.[i]?.[2] ?? '',
           endTime: formatDatetime(endTimeJst),
           totalHours: actualWorkHours.toFixed(2),
           breakTime: breakTimeDisplay,
         };
-
         break;
       }
     }
 
-    if (endedProject) {
-      break;
-    }
+    if (endedProject) break;
   }
 
   if (!endedProject) {
     return {
       success: false,
-      message: '勤務中のプロジェクトが見つかりません。先に勤務を開始してください。',
+      message: '勤務中のプロジェクトが見つかりません。',
     };
   }
 
@@ -109,9 +108,19 @@ const calculateTotalBreakMinutes = (breakData: string): number => {
   let totalMinutes = 0;
 
   for (const record of breakRecords) {
-    const match = record.match(/\((\d+)分\)/);
-    if (match?.[1]) {
-      totalMinutes += Number.parseInt(match[1], 10);
+    // 新しい形式: 休憩時間:hh:mm
+    const hhmmMatch = record.match(/休憩時間:(\d{2}):(\d{2})/);
+    if (hhmmMatch?.[1] && hhmmMatch?.[2]) {
+      const hours = Number.parseInt(hhmmMatch[1], 10);
+      const minutes = Number.parseInt(hhmmMatch[2], 10);
+      totalMinutes += hours * 60 + minutes;
+      continue;
+    }
+
+    // 従来の形式との互換性: (X分)
+    const oldMatch = record.match(/\((\d+)分\)/);
+    if (oldMatch?.[1]) {
+      totalMinutes += Number.parseInt(oldMatch[1], 10);
     }
   }
 

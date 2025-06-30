@@ -1,6 +1,7 @@
 import { get } from '../../../clients/spreadsheets/values/get';
 import { update } from '../../../clients/spreadsheets/values/update';
-import { formatJSTDatetime } from '../../../functions/format-jst-datetime';
+import { formatDurationHourMin } from '../../../functions/format-duration';
+import { getJstDate } from '../../../functions/get-jst-date';
 import type { Result } from '../../../types/result';
 import { getSheets } from './get-sheets';
 
@@ -9,9 +10,9 @@ type Options = {
   userId: string;
 };
 
-export const endBreak = async ({ userId, env }: Options): Promise<Result<{ breakDuration: number }>> => {
+export const endBreak = async ({ userId, env }: Options): Promise<Result<{ breakDuration: string }>> => {
   const sheetList = await getSheets({ env });
-  const breakEndTime = formatJSTDatetime(new Date());
+  const breakEndTimeJst = getJstDate();
 
   // 全てのシートをループして休憩中のレコードを探す
   for (const [sheetTitle] of Object.entries(sheetList)) {
@@ -34,8 +35,8 @@ export const endBreak = async ({ userId, env }: Options): Promise<Result<{ break
           };
         }
 
-        // 休憩開始時間を取得
-        const breakStartMatch = breakData.match(/休憩中:([^,]+)/);
+        // 休憩開始時刻を取得: 休憩中:YYYY-MM-DD HH:MM
+        const breakStartMatch = breakData.match(/休憩中:(\d{4}-\d{2}-\d{2} \d{2}:\d{2})/);
         if (!breakStartMatch) {
           return {
             success: false,
@@ -43,13 +44,19 @@ export const endBreak = async ({ userId, env }: Options): Promise<Result<{ break
           };
         }
 
-        const breakStartTime = new Date(breakStartMatch[1]);
-        const breakEndTimeDate = new Date();
-        const breakDuration = Math.round((breakEndTimeDate.getTime() - breakStartTime.getTime()) / (1000 * 60)); // 分単位
+        const breakStartTimeString = breakStartMatch[1];
+        const breakStartTimeJst = new Date(breakStartTimeString);
+
+        // JST時刻同士で差分をミリ秒で計算
+        const breakDurationMs = breakEndTimeJst.getTime() - breakStartTimeJst.getTime();
+        const breakDurationMinutes = breakDurationMs / (1000 * 60); // 分数（小数点含む）
+
+        // hh:mm形式で表示
+        const breakDurationFormatted = formatDurationHourMin(breakDurationMinutes);
 
         // 休憩データを更新（休憩中を削除し、休憩時間を記録）
         const updatedBreakData = breakData.replace(/休憩中:[^,]+,?/, '').replace(/,$/, '');
-        const breakRecord = `${breakStartMatch[1]}-${breakEndTime}(${breakDuration}分)`;
+        const breakRecord = `休憩時間:${breakDurationFormatted}`;
         const newBreakData = updatedBreakData ? `${updatedBreakData},${breakRecord}` : breakRecord;
 
         await update({
@@ -64,7 +71,7 @@ export const endBreak = async ({ userId, env }: Options): Promise<Result<{ break
         return {
           success: true,
           data: {
-            breakDuration,
+            breakDuration: breakDurationFormatted,
           },
         };
       }

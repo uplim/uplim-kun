@@ -11,7 +11,7 @@ type Options = {
 
 export const startBreak = async ({ userId, env }: Options): Promise<Result<{ breakStartTime: string }>> => {
   const sheetList = await getSheets({ env });
-  const breakStartTime = formatJSTDatetime(new Date());
+  const breakStartTimeFormatted = formatJSTDatetime(new Date());
 
   // 全てのシートをループして勤務中のレコードを探す
   for (const [sheetTitle] of Object.entries(sheetList)) {
@@ -34,8 +34,9 @@ export const startBreak = async ({ userId, env }: Options): Promise<Result<{ bre
           };
         }
 
-        // 休憩開始時間を記録（既存の休憩データに追加）
-        const newBreakData = breakData ? `${breakData},休憩中:${breakStartTime}` : `休憩中:${breakStartTime}`;
+        // 休憩開始時間を記録: 休憩中:休憩開始時刻
+        const breakStartData = `休憩中:${breakStartTimeFormatted}`;
+        const newBreakData = breakData ? `${breakData},${breakStartData}` : breakStartData;
 
         await update({
           spreadsheetId: env.TIMER_SPREADSHEET_ID,
@@ -49,7 +50,7 @@ export const startBreak = async ({ userId, env }: Options): Promise<Result<{ bre
         return {
           success: true,
           data: {
-            breakStartTime,
+            breakStartTime: breakStartTimeFormatted,
           },
         };
       }

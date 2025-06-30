@@ -17,7 +17,7 @@ export const breakEndHandler = async ({ context }: Option) => {
     }
 
     return context.res(
-      `${context.interaction.member?.user?.global_name}が休憩を終了しました。\n休憩時間: ${result.data.breakDuration}分`
+      `${context.interaction.member?.user?.global_name}が休憩を終了しました。\n休憩時間: ${result.data.breakDuration}`
     );
   } catch {
     return context.res('エラーが発生しました');

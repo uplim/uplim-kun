@@ -33,7 +33,7 @@ export const appendStartTime = async ({
   // 同じユーザーIDで既に勤務中のレコードがあるか確認
   const res = await get({
     spreadsheetId: env.TIMER_SPREADSHEET_ID,
-    range: `${projectName}!A:E`,
+    range: `${projectName}!A:G`,
   });
 
   const rows = res.values || [];
@@ -46,13 +46,13 @@ export const appendStartTime = async ({
     }
   }
 
-  // 新しい行を追加
+  // 新しい行を追加（ユーザーID, ユーザー名, 開始時間, 終了時間, 休憩時間, 稼働時間, メモ）
   await append({
     spreadsheetId: env.TIMER_SPREADSHEET_ID,
-    range: `${projectName}!A:E`,
+    range: `${projectName}!A:G`,
     valueInputOption: 'USER_ENTERED',
     requestBody: {
-      values: [[userId, userName, startTime, '', '', memo]],
+      values: [[userId, userName, startTime, '', '', '', memo]],
     },
   });
 

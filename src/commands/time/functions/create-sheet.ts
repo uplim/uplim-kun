@@ -28,10 +28,10 @@ export const createSheet = async ({ projectName, env }: Options) => {
   if (sheetId) {
     await update({
       spreadsheetId: env.TIMER_SPREADSHEET_ID,
-      range: `${projectName}!A1:F1`,
+      range: `${projectName}!A1:G1`,
       valueInputOption: 'USER_ENTERED',
       requestBody: {
-        values: [['ユーザーID', 'ユーザー名', '開始時刻', '終了時刻', '稼働時間（時）', 'メモ']],
+        values: [['ユーザーID', 'ユーザー名', '開始時間', '終了時間', '休憩時間', '稼働時間（時）', 'メモ']],
       },
     });
   }

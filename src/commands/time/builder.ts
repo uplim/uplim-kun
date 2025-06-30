@@ -9,5 +9,7 @@ export const timeBuilder = new Command('time', '勤怠を打刻するよ').optio
     new Option('memo', '仕事内容のメモ').required()
   ),
   new SubCommand('end', '勤務を終了するよ'),
+  new SubCommand('break_start', '休憩を開始するよ'),
+  new SubCommand('break_end', '休憩を終了するよ'),
   new SubCommand('list', '既存のプロジェクト一覧を表示するよ')
 );

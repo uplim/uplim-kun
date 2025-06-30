@@ -16,8 +16,10 @@ export const endHandler = async ({ context }: Option) => {
       return context.res(result.message);
     }
 
+    const breakInfo = result.data.breakTime ? `\n休憩時間: ${result.data.breakTime}` : '';
+
     return context.res(
-      `${context.interaction.member?.user?.global_name}がプロジェクト "${result.data.projectName}" の勤務を終了しました。\n開始時間: ${result.data.startTime}\n終了時間: ${result.data.endTime}\n勤務時間: ${result.data.totalHours}時間`
+      `${context.interaction.member?.user?.global_name}がプロジェクト "${result.data.projectName}" の勤務を終了しました。\n開始時間: ${result.data.startTime}\n終了時間: ${result.data.endTime}${breakInfo}\n稼働時間: ${result.data.totalHours}時間`
     );
   } catch {
     return context.res('エラーが発生しました');
